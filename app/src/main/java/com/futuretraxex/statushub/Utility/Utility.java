@@ -61,7 +61,7 @@ public class Utility {
             case "arabic":
                 return Constants.ETHNICITY_ARABIC;
             //if no ethnicity consider him asian
-            //as almost every 5th person is asian.
+            //indians master race?
 //            default:
 //                return Constants.ETHNICITY_ASIAN;
 
@@ -103,8 +103,8 @@ public class Utility {
         }
         else {
             //if no ethnicity consider him asian
-            //as almost every 5th person is asian.
-            return Constants.ETHNICITY_ASIAN;
+            //Indians master race ?
+            return Constants.ETHNICITY_INDIAN;
         }
 
     }

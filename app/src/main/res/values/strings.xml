@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">StatusHub</string>
 
-    <string name="activity_home_query_hint">Search (by status, weight, height)</string>
+    <string name="activity_home_query_hint">Search (by jew , 60kg , 182cm)</string>
 
     <string name="activity_home_favourites">Open Favourites</string>
 

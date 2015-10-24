@@ -39,7 +39,7 @@ public class NetworkService {
         void onFaliure(Bundle message);
     }
 
-    public static void FetchMembersData(Context context, Bundle _data, final NetworkServiceCB networkServiceCB)    {
+    public static void FetchMembersData(final Context context, final Bundle _data, final NetworkServiceCB networkServiceCB)    {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -77,6 +77,15 @@ public class NetworkService {
                     temp.putString("message", "Exception : " + iox.toString());
                     networkServiceCB.onFaliure(temp);
                 }
+            }
+        }).start();
+    }
+
+    public static void FetchAPIHits(final Context context)   {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //Do network access here.
             }
         }).start();
     }

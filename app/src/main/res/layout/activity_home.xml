@@ -14,8 +14,11 @@
     <SearchView
         android:id="@+id/searchbar"
         android:queryHint="@string/activity_home_query_hint"
+        android:iconifiedByDefault="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:descendantFocusability="afterDescendants"
+        >
     </SearchView>
 
     <LinearLayout
@@ -54,14 +57,7 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/status_list"
-        android:layout_below="@id/linear_layout_fav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
 
-    </ListView>
 
 
     <LinearLayout
@@ -99,6 +95,7 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/linear_layout_apidata"
         android:orientation="horizontal"
@@ -121,6 +118,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/status_list"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:layout_below="@id/linear_layout_fav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linear_layout_apidata"
+        >
+
+
+    </ListView>
 
 
 </RelativeLayout>

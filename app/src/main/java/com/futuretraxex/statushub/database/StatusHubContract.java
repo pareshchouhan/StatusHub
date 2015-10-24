@@ -45,6 +45,7 @@ public class StatusHubContract {
 
         public static final String TABLE_NAME = "users";
 
+        public static final String COLUMN_TABLE_USER_ID = "user_id";
         public static final String COLUMN_TABLE_DOB = "dob";
         public static final String COLUMN_TABLE_STATUS = "status";
         public static final String COLUMN_TABLE_ETHNICITY = "ethnicity";
@@ -56,27 +57,28 @@ public class StatusHubContract {
         public static final String COLUMN_IS_FAVOURITE = "is_favourite";
 
         public static final String SQL_CREATE_TABLE = "CREATE TABLE "+ TABLE_NAME + "(\n" +
-                "\t`"+ _ID  +"`\tINTEGER NOT NULL PRIMARY KEY,\n" +
+                "\t`"+ _ID  +"`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`"+ COLUMN_TABLE_USER_ID  +"`\tINTEGER NOT NULL UNIQUE,\n" +
                 "\t`" + COLUMN_TABLE_DOB + "`\tTEXT NOT NULL,\n" +
                 "\t`" + COLUMN_TABLE_STATUS + "`\tTEXT NOT NULL,\n" +
                 "\t`" + COLUMN_TABLE_ETHNICITY + "`\tINTEGER NOT NULL,\n" +
-                "\t`"+ COLUMN_TABLE_WEIGHT +"`\tLONG NOT NULL,\n" +
+                "\t`"+ COLUMN_TABLE_WEIGHT +"`\tREAL NOT NULL,\n" +
                 "\t`"+ COLUMN_TABLE_HEIGHT +"`\tINTEGER NOT NULL,\n" +
-                "\t`"+ COLUMN_TABLE_IS_VEG +"`\tINTEGER NOT NULL\n" +
-                "\t`"+ COLUMN_TABLE_DRINK +"`\tINTEGER NOT NULL\n" +
-                "\t`"+ COLUMN_TABLE_IMAGE +"`\tTEXT\n" +
+                "\t`"+ COLUMN_TABLE_IS_VEG +"`\tINTEGER NOT NULL,\n" +
+                "\t`"+ COLUMN_TABLE_DRINK +"`\tINTEGER NOT NULL,\n" +
+                "\t`"+ COLUMN_TABLE_IMAGE +"`\tTEXT,\n" +
                 "\t`"+ COLUMN_IS_FAVOURITE +"`\tINTEGER NOT NULL\n" +
                 ")";
 
 
 
         public static final String SELECT_BY_USER_ID = _ID + " = ?";
-        public static final String SELECT_BY_WEIGHT_SORT = "ORDER BY weight ASC";
-        public static final String SELECT_BY_HEIGHT_SORT = _ID + "ORDER BY height DESC";
-        public static final String SELECT_BY_WEIGHT_FILTER = _ID + "WHERE weight <= ?";
-        public static final String SELECT_BY_HEIGHT_FILTER = _ID + "WHERE height >= ?";
-        public static final String SELECT_BY_ETHNICITY_FILTER = _ID + "WHERE ethnicity = ?";
-        public static final String SELECT_BY_FAVOURITES_FILTER = _ID + "WHERE FAVOURITES = 1";
+        public static final String SORT_BY_WEIGHT = "weight ASC";
+        public static final String SORT_BY_HEIGHT =  "height DESC";
+        public static final String SELECT_BY_WEIGHT_FILTER = "weight <= ?";
+        public static final String SELECT_BY_HEIGHT_FILTER = "height >= ?";
+        public static final String SELECT_BY_ETHNICITY_FILTER = "ethnicity = ?";
+        public static final String SELECT_BY_FAVOURITES_FILTER = "FAVOURITES = 1";
 
         //below build Uris are working, See TestUriGenerator.java for detailed Tests.
 
@@ -88,7 +90,6 @@ public class StatusHubContract {
         //Build Uri with Favourites.
         public static Uri buildUsersUriWithFavourites() {
             return CONTENT_URI.buildUpon()
-                    .appendEncodedPath(PATH_USERS)
                     .appendEncodedPath(PATH_USERS_FAVOURITES)
                     .build();
         }
@@ -96,7 +97,6 @@ public class StatusHubContract {
         //Build Uri with Weight Sort Filter : Sorts from low to high ASC ?.
         public static Uri buildUsersUriWithWeightSortFilter()   {
             return CONTENT_URI.buildUpon()
-                    .appendEncodedPath(PATH_USERS)
                     .appendEncodedPath(PATH_USERS_WEIGHT)
                     .build();
         }
@@ -104,15 +104,13 @@ public class StatusHubContract {
         //Build Uri with Height Sort Filter : Sorts from high to low DESC ?.
         public static Uri buildUsersUriWithHeightSortFilter()   {
             return CONTENT_URI.buildUpon()
-                    .appendEncodedPath(PATH_USERS)
                     .appendEncodedPath(PATH_USERS_HEIGHT)
                     .build();
         }
 
         //Build Uri with Weight Sort Filter : Sorts from high to low using given weight ?.
-        public static Uri buildUsersUriWithWeightFilter(long weight)   {
+        public static Uri buildUsersUriWithWeightFilter(float weight)   {
             return CONTENT_URI.buildUpon()
-                    .appendEncodedPath(PATH_USERS)
                     .appendEncodedPath(PATH_USERS_WEIGHT)
                     .appendEncodedPath(String.valueOf(weight))
                     .build();
@@ -121,7 +119,6 @@ public class StatusHubContract {
         //Build Uri with Height Sort Filter : Sorts from low to high using given height ?.
         public static Uri buildUsersUriWithHeightFilter(int height)   {
             return CONTENT_URI.buildUpon()
-                    .appendEncodedPath(PATH_USERS)
                     .appendEncodedPath(PATH_USERS_HEIGHT)
                     .appendEncodedPath(String.valueOf(height))
                     .build();
@@ -131,9 +128,15 @@ public class StatusHubContract {
         public static Uri buildUsersWithEthnicityFilter(String ethnicity)   {
             String ethnic = String.valueOf(Utility.getIdFromEthnicity(ethnicity));
             return CONTENT_URI.buildUpon()
-                    .appendEncodedPath(PATH_USERS)
                     .appendEncodedPath(PATH_USERS_ETHNICITY)
                     .appendEncodedPath(ethnic)
+                    .build();
+        }
+
+        public static Uri buildUsersWithEthnicityIdFilter(int ethnicity)   {
+            return CONTENT_URI.buildUpon()
+                    .appendEncodedPath(PATH_USERS_ETHNICITY)
+                    .appendEncodedPath(String.valueOf(ethnicity))
                     .build();
         }
 

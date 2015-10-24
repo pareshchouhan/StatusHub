@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class StatusHubDBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "statushub.db";
-    private static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "statushub.db";
+    public static final int DATABASE_VERSION = 1;
 
 
     public StatusHubDBHelper(Context context)    {

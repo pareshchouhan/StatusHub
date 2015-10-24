@@ -20,6 +20,7 @@ import android.util.Log;
 
 import com.futuretraxex.statushub.DataModel.MemberModel;
 import com.futuretraxex.statushub.R;
+import com.futuretraxex.statushub.Utility.Utility;
 import com.futuretraxex.statushub.database.StatusHubContract;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -82,15 +83,16 @@ public class StatusHubSyncAdapter extends AbstractThreadedSyncAdapter {
                     for(String member : membersList)    {
                         MemberModel memberModel = gson.fromJson(member,MemberModel.class);
                         ContentValues memberValue = new ContentValues();
-                        memberValue.put(StatusHubContract.UsersSchema._ID,memberModel.id);
-                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_DOB,memberModel.id);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_USER_ID,memberModel.id);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_DOB,memberModel.dob);
                         memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_STATUS,memberModel.status);
                         memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_ETHNICITY,memberModel.ethnicity);
-                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_WEIGHT,memberModel.weight);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_WEIGHT, Utility.convertWeightToKg(memberModel.weight));
                         memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_HEIGHT,memberModel.height);
                         memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_IS_VEG,memberModel.is_veg);
                         memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_DRINK,memberModel.drink);
                         memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_IMAGE,memberModel.image);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_IS_FAVOURITE,0);
 
                         membersValues.add(memberValue);
 
@@ -99,7 +101,6 @@ public class StatusHubSyncAdapter extends AbstractThreadedSyncAdapter {
                     ContentValues dataArray[] = new ContentValues[membersValues.size()];
                     membersValues.toArray(dataArray);
                     Logger.w("Bulk Inserting");
-
                     getContext().getContentResolver().bulkInsert(StatusHubContract.UsersSchema.CONTENT_URI, dataArray);
 
                 }
@@ -112,11 +113,6 @@ public class StatusHubSyncAdapter extends AbstractThreadedSyncAdapter {
                 Logger.w("Failed Sync : " + message.getString("message"));
             }
         });
-    }
-
-    //If notifications arrive call this function to notify user about it.
-    private void notifyUser()   {
-
     }
 
 

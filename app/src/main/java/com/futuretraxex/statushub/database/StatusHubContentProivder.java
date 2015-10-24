@@ -64,7 +64,7 @@ public class StatusHubContentProivder extends ContentProvider {
         matcher.addURI(authority, "users/#", USERS_BY_ID);
         matcher.addURI(authority, "users/weight", USERS_BY_WEIGHT_SORT);
         matcher.addURI(authority, "users/height", USERS_BY_HEIGHT_SORT);
-        matcher.addURI(authority, "users/weight/#", USERS_BY_WEIGHT_FILTER);
+        matcher.addURI(authority, "users/weight/*", USERS_BY_WEIGHT_FILTER);
         matcher.addURI(authority, "users/height/#", USERS_BY_HEIGHT_FILTER);
         matcher.addURI(authority, "users/ethnicity/#", USERS_BY_ETHNICITY_FILTER);
         matcher.addURI(authority, "users/favourites", USERS_BY_FAVOURITES_FILTER);
@@ -280,26 +280,26 @@ public class StatusHubContentProivder extends ContentProvider {
     }
 
     private Cursor getUsersByHeightSort(Uri uri, String[] projection, String sortOrder)   {
-        String selection = StatusHubContract.UsersSchema.SELECT_BY_HEIGHT_SORT;
+        String sort = StatusHubContract.UsersSchema.SORT_BY_HEIGHT;
         return mDBHelper.getReadableDatabase().query(
                 StatusHubContract.UsersSchema.TABLE_NAME,
                 projection,
-                selection,
                 null,
                 null,
                 null,
-                sortOrder);
+                null,
+                sort);
     }
     private Cursor getUsersByWeightSort(Uri uri, String[] projection, String sortOrder)   {
-        String selection = StatusHubContract.UsersSchema.SELECT_BY_WEIGHT_SORT;
+        String sort = StatusHubContract.UsersSchema.SORT_BY_WEIGHT;
         return mDBHelper.getReadableDatabase().query(
                 StatusHubContract.UsersSchema.TABLE_NAME,
                 projection,
-                selection,
                 null,
                 null,
                 null,
-                sortOrder);
+                null,
+                sort);
     }
 
     //Again below 3 functions can be merged into a single function to save space.
