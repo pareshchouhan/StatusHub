@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ethnic_array">
+        <item>Asian</item>
+        <item>Indian</item>
+        <item>African American</item>
+        <item>Asian American</item>
+        <item>European</item>
+        <item>British</item>
+        <item>Jewish</item>
+        <item>Latino</item>
+        <item>Native American</item>
+        <item>Arabic</item>
+    </string-array>
+</resources>

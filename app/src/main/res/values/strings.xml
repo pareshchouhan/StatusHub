@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">StatusHub</string>
+
+    <string name="activity_home_query_hint">Search (by status, weight, height)</string>
+
+    <string name="activity_home_favourites">Open Favourites</string>
+
+
+    <string name="activity_home_sort">Sort By</string>
+    <string name="activity_home_height_button">Height</string>
+    <string name="activity_home_weight_button">Weight</string>
+    <string name="content_authority">com.futuretraxex.statushub.provider</string>
+    <string name="sync_account_type">statushub.futuretraxex.com</string>
 </resources>
