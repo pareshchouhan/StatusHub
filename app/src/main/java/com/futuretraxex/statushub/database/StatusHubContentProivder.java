@@ -8,8 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.net.wifi.WifiConfiguration;
 import android.support.annotation.Nullable;
 
+import com.futuretraxex.statushub.Utility.Utility;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -54,6 +56,8 @@ public class StatusHubContentProivder extends ContentProvider {
 
     public static final int USERS_BY_ETHNICITY_HEIGHT_FILTER = 109;
 
+    public static final int USERS_BY_FAVOURITE_TOGGLE = 110;
+
 
     public static UriMatcher buildUriMatcher() {
         // don't need Regex because UriMatcher
@@ -73,7 +77,9 @@ public class StatusHubContentProivder extends ContentProvider {
         matcher.addURI(authority, "users/ethnicity/#/weight", USERS_BY_ETHNICITY_WEIGHT_FILTER);
         matcher.addURI(authority, "users/ethnicity/#/height", USERS_BY_ETHNICITY_HEIGHT_FILTER);
         matcher.addURI(authority, "users/ethnicity/#", USERS_BY_ETHNICITY_FILTER);
+        matcher.addURI(authority, "users/favourites/#", USERS_BY_FAVOURITE_TOGGLE);
         matcher.addURI(authority, "users/favourites", USERS_BY_FAVOURITES_FILTER);
+
         return matcher;
     }
 
@@ -165,6 +171,8 @@ public class StatusHubContentProivder extends ContentProvider {
                 return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
             case USERS_BY_ETHNICITY_WEIGHT_FILTER:
                 return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
+            case USERS_BY_FAVOURITE_TOGGLE:
+                return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -232,6 +240,10 @@ public class StatusHubContentProivder extends ContentProvider {
                 rowsUpdated = db.update(StatusHubContract.UsersSchema.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
+
+            case USERS_BY_FAVOURITE_TOGGLE:
+                    rowsUpdated = updateUserFavoruiteById(uri, values);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -279,12 +291,23 @@ public class StatusHubContentProivder extends ContentProvider {
 
     //Helper functions for querying.
 
+
+    private int updateUserFavoruiteById(Uri uri, ContentValues cvalue)  {
+        String id = StatusHubContract.UsersSchema.getUserIdFromFavouritesUri(uri);
+        String selection = StatusHubContract.UsersSchema.SELECT_BY_USER_ID;
+        String[] selectionArgs = {
+                id
+        };
+        return mDBHelper.getWritableDatabase().update(StatusHubContract.UsersSchema.TABLE_NAME, cvalue, selection, selectionArgs);
+    }
+
     private Cursor getUserById(Uri uri, String[] projection, String sortOrder)   {
         String id = StatusHubContract.UsersSchema.getUserIdFromUsersByIdUri(uri);
         String selection = StatusHubContract.UsersSchema.SELECT_BY_USER_ID;
         String[] selectionArgs = {
                 id
         };
+//        Logger.w(id);
         return mDBHelper.getReadableDatabase().query(
                 StatusHubContract.UsersSchema.TABLE_NAME,
                 projection,

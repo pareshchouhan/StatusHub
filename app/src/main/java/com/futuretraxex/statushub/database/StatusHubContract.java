@@ -78,7 +78,7 @@ public class StatusHubContract {
         public static final String SELECT_BY_WEIGHT_FILTER = "weight <= ?";
         public static final String SELECT_BY_HEIGHT_FILTER = "height >= ?";
         public static final String SELECT_BY_ETHNICITY_FILTER = "ethnicity = ?";
-        public static final String SELECT_BY_FAVOURITES_FILTER = "FAVOURITES = 1";
+        public static final String SELECT_BY_FAVOURITES_FILTER = "is_favourite = 1";
 
         //below build Uris are working, See TestUriGenerator.java for detailed Tests.
 
@@ -156,10 +156,21 @@ public class StatusHubContract {
                     .build();
         }
 
+        public static Uri buildUsersUriWithFavouriteAndUserId(int id)   {
+            return CONTENT_URI.buildUpon()
+                    .appendEncodedPath(PATH_USERS_FAVOURITES)
+                    .appendEncodedPath(String.valueOf(id))
+                    .build();
+        }
+
         //Get users id from Uri of the form <content_authority>/users/3
         //returns 3
         public static String getUserIdFromUsersByIdUri(Uri uri) {
             return uri.getPathSegments().get(1);
+        }
+
+        public static String getUserIdFromFavouritesUri(Uri uri)   {
+            return uri.getPathSegments().get(2);
         }
 
         //Below 3 functions can be combined in to a single generic function

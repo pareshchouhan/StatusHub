@@ -2,14 +2,19 @@ package com.futuretraxex.statushub.Activity;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CursorAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -38,7 +43,8 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             StatusHubContract.UsersSchema.COLUMN_TABLE_STATUS,
             StatusHubContract.UsersSchema.COLUMN_TABLE_IS_VEG,
             StatusHubContract.UsersSchema.COLUMN_TABLE_DRINK,
-            StatusHubContract.UsersSchema.COLUMN_IS_FAVOURITE
+            StatusHubContract.UsersSchema.COLUMN_IS_FAVOURITE,
+            StatusHubContract.UsersSchema.COLUMN_TABLE_IMAGE
     };
 
     public static final int COL_TABLE_ID = 0;
@@ -51,9 +57,12 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int COL_TABLE_IS_VEG = 7;
     public static final int COL_TABLE_DRINK = 8;
     public static final int COL_TABLE_IS_FAVOURITE = 9;
+    public static final int COL_TABLE_IMAGE = 10;
 
     private Uri mDataUri = null;
     private int mEthnicity = -1;
+
+    private int mOritentation = Configuration.ORIENTATION_PORTRAIT;
 
 
     public static final int USERS_LOADER = 0;
@@ -61,18 +70,27 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        mStatusListAdapter = new StatusListAdapter(this,null,true);
+        mOritentation = getResources().getConfiguration().orientation;
+        if(mOritentation == Configuration.ORIENTATION_PORTRAIT) {
+            setContentView(R.layout.activity_home_list);
+            new HomeActivityViewHolder(getWindow().getDecorView().getRootView(), true);
+            HomeActivityViewHolder.mUsersListView.setAdapter(mStatusListAdapter);
+            HomeActivityViewHolder.mUsersListView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_fav_view, null));
+
+        }
+        else {
+            setContentView(R.layout.activity_home_grid);
+            new HomeActivityViewHolder(getWindow().getDecorView().getRootView(), false);
+            HomeActivityViewHolder.mUserGridView.setAdapter(mStatusListAdapter);
+            HomeActivityViewHolder.mUserGridView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_status_view, null));
+        }
+
 
         //Initialize viewholder.
         Logger.init();
 
-        new HomeActivityViewHolder(getWindow().getDecorView().getRootView());
 
-
-
-        mStatusListAdapter = new StatusListAdapter(this,null,true);
-
-        HomeActivityViewHolder.mUsersListView.setAdapter(mStatusListAdapter);
 
         ISetupListeners();
 
@@ -107,10 +125,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         HomeActivityViewHolder.mHeightSortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mEthnicity != -1)    {
+                if (mEthnicity != -1) {
                     mDataUri = StatusHubContract.UsersSchema.buildUsersWithEthnicityIdHeightFilter(mEthnicity);
-                }
-                else {
+                } else {
                     mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithHeightSortFilter();
                 }
 
@@ -121,10 +138,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         HomeActivityViewHolder.mWeightSortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mEthnicity != -1)    {
+                if (mEthnicity != -1) {
                     mDataUri = StatusHubContract.UsersSchema.buildUsersWithEthnicityIdWeightFilter(mEthnicity);
-                }
-                else {
+                } else {
                     mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithWeightSortFilter();
                 }
                 getLoaderManager().restartLoader(USERS_LOADER, null, HomeActivity.this);
@@ -149,9 +165,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                 try {
 
                     String tempString = s;
-                    if(tempString.toLowerCase().contains("cm"))  {
+                    if (tempString.toLowerCase().contains("cm")) {
                         int start = tempString.toLowerCase().indexOf("cm");
-                        tempString = tempString.toLowerCase().substring(0,start);
+                        tempString = tempString.toLowerCase().substring(0, start);
                     }
                     int height = Integer.valueOf(tempString);
                     mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithHeightFilter(height);
@@ -160,9 +176,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                     try {
 
                         String tempString = s;
-                        if(tempString.toLowerCase().contains("kg"))  {
+                        if (tempString.toLowerCase().contains("kg")) {
                             int start = tempString.toLowerCase().indexOf("kg");
-                            tempString = tempString.toLowerCase().substring(0,start);
+                            tempString = tempString.toLowerCase().substring(0, start);
                         }
                         float weight = Float.valueOf(tempString);
                         mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithWeightFilter(weight);
@@ -180,10 +196,78 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                 return true;
             }
         });
+
+        if(mOritentation == Configuration.ORIENTATION_PORTRAIT)    {
+            HomeActivityViewHolder.mUsersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent memberDetailActivity = new Intent(HomeActivity.this, MemberProfileActivity.class);
+
+
+                    Uri uri = StatusHubContract.UsersSchema.buildUsersUriWithId(l);
+//                    Logger.w("Uri : " + uri);
+                    Cursor data = getContentResolver().query(uri, USERS_COLUMNS, null, null, null, null);
+                    if (data != null) {
+                        if (data.moveToFirst()) {
+//                            Logger.w("Uri : " + data.getInt(COL_TABLE_USER_ID) + " " + data.getString(COL_TABLE_STATUS));
+                        }
+                        data.close();
+                    }
+
+                    memberDetailActivity.putExtra("uri", uri.toString());
+                    startActivity(memberDetailActivity);
+                }
+            });
+        }
+        else {
+            HomeActivityViewHolder.mUserGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent memberDetailActivity = new Intent(HomeActivity.this, MemberProfileActivity.class);
+
+                    Uri uri = StatusHubContract.UsersSchema.buildUsersUriWithId(l);
+//                    Logger.w("Uri : " + uri);
+                    Cursor data = getContentResolver().query(uri, USERS_COLUMNS, null, null, null, null);
+                    if (data != null) {
+                        if (data.moveToFirst()) {
+//                            Logger.w("Uri : " + data.getInt(COL_TABLE_USER_ID) + " " + data.getString(COL_TABLE_STATUS));
+                        }
+                        data.close();
+                    }
+
+                    memberDetailActivity.putExtra("uri", uri.toString());
+                    startActivity(memberDetailActivity);
+                }
+            });
+        }
+
+
+
+
+        HomeActivityViewHolder.mOpenFavouritesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent favouritesActivity = new Intent(HomeActivity.this, FavouritesActivity.class);
+                startActivity(favouritesActivity);
+            }
+        });
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mOritentation = newConfig.orientation;
 
-
+        if(mOritentation == Configuration.ORIENTATION_LANDSCAPE)    {
+            setContentView(R.layout.activity_home_grid);
+            new HomeActivityViewHolder(getWindow().getDecorView().getRootView(), false);
+        }
+        else {
+            setContentView(R.layout.activity_home_list);
+            new HomeActivityViewHolder(getWindow().getDecorView().getRootView(), true);
+        }
+        HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+    }
 
     static class HomeActivityViewHolder   {
 
@@ -192,21 +276,28 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         public static TextView mOpenFavouritesTextView;
         public static Spinner mSelectEthnicitySpinner;
         public static ListView mUsersListView;
+        public static GridView mUserGridView;
 
         public static Button mWeightSortButton;
         public static Button mHeightSortButton;
 
         public static ProgressBar mProgressBar;
 
-        public HomeActivityViewHolder(View view)    {
+        public HomeActivityViewHolder(View view, boolean isPotratit)    {
             mOpenFavouritesTextView = (TextView) view.findViewById(R.id.open_favourites);
             mSelectEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnic);
-            mUsersListView = (ListView) view.findViewById(R.id.status_list);
             mWeightSortButton = (Button) view.findViewById(R.id.sortByWeight);
             mHeightSortButton = (Button) view.findViewById(R.id.sortByHeight);
             mSearchView = (SearchView) view.findViewById(R.id.searchbar);
             mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+            if(isPotratit)  {
+                mUsersListView = (ListView) view.findViewById(R.id.status_list);
+            }
+            else {
+                mUserGridView = (GridView) view.findViewById(R.id.status_list);
+            }
         }
+
     }
 
     @Override

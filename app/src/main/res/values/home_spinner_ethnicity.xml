@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="ethnic_array">
-        <item>None</item>
+        <item>Ethinicity - All</item>
         <item>Asian</item>
         <item>Indian</item>
         <item>African American</item>
