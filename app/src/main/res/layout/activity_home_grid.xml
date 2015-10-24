@@ -146,5 +146,15 @@
         android:background="@drawable/progress_bar"
         android:visibility="visible" />
 
+    <TextView
+        android:text="@string/empty_status_view"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/black"
+        android:layout_height="?android:listPreferredItemHeight" />
+
 
 </RelativeLayout>

@@ -34,10 +34,12 @@ public class StatusListAdapter extends CursorAdapter{
     public static class ViewHolder  {
         public final TextView mStatusTextView;
         public final ImageView mProfilePicSmall;
+        public final int id;
 
-        public ViewHolder(View view)    {
+        public ViewHolder(View view, int _id)    {
             mStatusTextView = (TextView) view.findViewById(R.id.status_text);
             mProfilePicSmall = (ImageView) view.findViewById(R.id.small_profile_pic);
+            id = _id;
         }
     }
 
@@ -47,7 +49,7 @@ public class StatusListAdapter extends CursorAdapter{
 //        Logger.w("Got New View");
         View view = LayoutInflater.from(context).inflate(R.layout.layout_status_list_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view,cursor.getInt(HomeActivity.COL_TABLE_USER_ID));
         view.setTag(viewHolder);
         return view;
     }

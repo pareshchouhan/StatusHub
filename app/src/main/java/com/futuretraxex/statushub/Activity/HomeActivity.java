@@ -76,14 +76,14 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             setContentView(R.layout.activity_home_list);
             new HomeActivityViewHolder(getWindow().getDecorView().getRootView(), true);
             HomeActivityViewHolder.mUsersListView.setAdapter(mStatusListAdapter);
-            HomeActivityViewHolder.mUsersListView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_fav_view, null));
+            HomeActivityViewHolder.mUsersListView.setEmptyView(HomeActivityViewHolder.mEmptyView);
 
         }
         else {
             setContentView(R.layout.activity_home_grid);
             new HomeActivityViewHolder(getWindow().getDecorView().getRootView(), false);
             HomeActivityViewHolder.mUserGridView.setAdapter(mStatusListAdapter);
-            HomeActivityViewHolder.mUserGridView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_status_view, null));
+            HomeActivityViewHolder.mUserGridView.setEmptyView(HomeActivityViewHolder.mEmptyView);
         }
 
 
@@ -283,6 +283,8 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
         public static ProgressBar mProgressBar;
 
+        public static TextView mEmptyView;
+
         public HomeActivityViewHolder(View view, boolean isPotratit)    {
             mOpenFavouritesTextView = (TextView) view.findViewById(R.id.open_favourites);
             mSelectEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnic);
@@ -290,6 +292,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             mHeightSortButton = (Button) view.findViewById(R.id.sortByHeight);
             mSearchView = (SearchView) view.findViewById(R.id.searchbar);
             mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+            mEmptyView = (TextView) view.findViewById(R.id.empty_status_view);
             if(isPotratit)  {
                 mUsersListView = (ListView) view.findViewById(R.id.status_list);
             }
