@@ -18,12 +18,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.futuretraxex.statushub.DataModel.MemberModel;
 import com.futuretraxex.statushub.R;
+import com.futuretraxex.statushub.database.StatusHubContract;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -65,6 +69,49 @@ public class StatusHubSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
+        NetworkService.FetchMembersData(getContext(), null, new NetworkService.NetworkServiceCB() {
+            @Override
+            public void onSuccess(Bundle message) {
+
+                Gson gson = new Gson();
+
+                ArrayList<ContentValues> membersValues = new ArrayList<ContentValues>();
+                if(message.containsKey("members"))  {
+                    ArrayList<String> membersList = message.getStringArrayList("members");
+
+                    for(String member : membersList)    {
+                        MemberModel memberModel = gson.fromJson(member,MemberModel.class);
+                        ContentValues memberValue = new ContentValues();
+                        memberValue.put(StatusHubContract.UsersSchema._ID,memberModel.id);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_DOB,memberModel.id);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_STATUS,memberModel.status);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_ETHNICITY,memberModel.ethnicity);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_WEIGHT,memberModel.weight);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_HEIGHT,memberModel.height);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_IS_VEG,memberModel.is_veg);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_DRINK,memberModel.drink);
+                        memberValue.put(StatusHubContract.UsersSchema.COLUMN_TABLE_IMAGE,memberModel.image);
+
+                        membersValues.add(memberValue);
+
+                    }
+
+                    ContentValues dataArray[] = new ContentValues[membersValues.size()];
+                    membersValues.toArray(dataArray);
+                    Logger.w("Bulk Inserting");
+
+                    getContext().getContentResolver().bulkInsert(StatusHubContract.UsersSchema.CONTENT_URI, dataArray);
+
+                }
+
+
+            }
+
+            @Override
+            public void onFaliure(Bundle message) {
+                Logger.w("Failed Sync : " + message.getString("message"));
+            }
+        });
     }
 
     //If notifications arrive call this function to notify user about it.
