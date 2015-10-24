@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int COL_TABLE_IS_FAVOURITE = 9;
 
     private Uri mDataUri = null;
+    private int mEthnicity = -1;
 
 
     public static final int USERS_LOADER = 0;
@@ -86,13 +88,14 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         HomeActivityViewHolder.mSelectEthnicitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i == 0)  {
+                if (i == 0) {
                     mDataUri = StatusHubContract.UsersSchema.CONTENT_URI;
-                }
-                else {
+                    mEthnicity = -1;
+                } else {
+                    mEthnicity = i - 1;
                     mDataUri = StatusHubContract.UsersSchema.buildUsersWithEthnicityIdFilter(i - 1);
                 }
-                getLoaderManager().restartLoader(USERS_LOADER,null,HomeActivity.this);
+                getLoaderManager().restartLoader(USERS_LOADER, null, HomeActivity.this);
             }
 
             @Override
@@ -104,7 +107,13 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         HomeActivityViewHolder.mHeightSortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithHeightSortFilter();
+                if(mEthnicity != -1)    {
+                    mDataUri = StatusHubContract.UsersSchema.buildUsersWithEthnicityIdHeightFilter(mEthnicity);
+                }
+                else {
+                    mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithHeightSortFilter();
+                }
+
                 getLoaderManager().restartLoader(USERS_LOADER, null, HomeActivity.this);
             }
         });
@@ -112,8 +121,13 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         HomeActivityViewHolder.mWeightSortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithWeightSortFilter();
-                getLoaderManager().restartLoader(USERS_LOADER,null,HomeActivity.this);
+                if(mEthnicity != -1)    {
+                    mDataUri = StatusHubContract.UsersSchema.buildUsersWithEthnicityIdWeightFilter(mEthnicity);
+                }
+                else {
+                    mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithWeightSortFilter();
+                }
+                getLoaderManager().restartLoader(USERS_LOADER, null, HomeActivity.this);
             }
         });
 
@@ -133,24 +147,34 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public boolean onQueryTextChange(String s) {
                 try {
-                    int height = Integer.valueOf(s);
-                    mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithHeightFilter(height);
-                    getLoaderManager().restartLoader(USERS_LOADER,null,HomeActivity.this);
-                }
-                catch(NumberFormatException iox)    {
-                    try {
-                        float weight = Float.valueOf(s);
-                        mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithWeightFilter(weight);
-                        getLoaderManager().restartLoader(USERS_LOADER,null,HomeActivity.this);
+
+                    String tempString = s;
+                    if(tempString.toLowerCase().contains("cm"))  {
+                        int start = tempString.toLowerCase().indexOf("cm");
+                        tempString = tempString.toLowerCase().substring(0,start);
                     }
-                    catch(NumberFormatException nox)    {
+                    int height = Integer.valueOf(tempString);
+                    mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithHeightFilter(height);
+                    getLoaderManager().restartLoader(USERS_LOADER, null, HomeActivity.this);
+                } catch (NumberFormatException iox) {
+                    try {
+
+                        String tempString = s;
+                        if(tempString.toLowerCase().contains("kg"))  {
+                            int start = tempString.toLowerCase().indexOf("kg");
+                            tempString = tempString.toLowerCase().substring(0,start);
+                        }
+                        float weight = Float.valueOf(tempString);
+                        mDataUri = StatusHubContract.UsersSchema.buildUsersUriWithWeightFilter(weight);
+                        getLoaderManager().restartLoader(USERS_LOADER, null, HomeActivity.this);
+                    } catch (NumberFormatException nox) {
                         int ethnicity = Utility.getIdFromEthnicity(s);
                         mDataUri = StatusHubContract.UsersSchema.buildUsersWithEthnicityIdFilter(ethnicity);
-                        if(s.length() == 0) {
+                        if (s.length() == 0) {
                             mDataUri = StatusHubContract.UsersSchema.CONTENT_URI;
                         }
 
-                        getLoaderManager().restartLoader(USERS_LOADER,null,HomeActivity.this);
+                        getLoaderManager().restartLoader(USERS_LOADER, null, HomeActivity.this);
                     }
                 }
                 return true;
@@ -172,6 +196,8 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         public static Button mWeightSortButton;
         public static Button mHeightSortButton;
 
+        public static ProgressBar mProgressBar;
+
         public HomeActivityViewHolder(View view)    {
             mOpenFavouritesTextView = (TextView) view.findViewById(R.id.open_favourites);
             mSelectEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnic);
@@ -179,6 +205,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             mWeightSortButton = (Button) view.findViewById(R.id.sortByWeight);
             mHeightSortButton = (Button) view.findViewById(R.id.sortByHeight);
             mSearchView = (SearchView) view.findViewById(R.id.searchbar);
+            mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar);
         }
     }
 
@@ -188,7 +215,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         if(mDataUri == null)    {
             mDataUri = StatusHubContract.UsersSchema.CONTENT_URI;
         }
-
+        HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.VISIBLE);
 //        Logger.w("Loading data...");
         return new CursorLoader(this,
                 mDataUri,
@@ -201,6 +228,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 //        Logger.w("Swapping cursor data " + data.getCount());
+        HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.INVISIBLE);
         mStatusListAdapter.swapCursor(data);
 
     }

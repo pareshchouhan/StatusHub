@@ -50,6 +50,10 @@ public class StatusHubContentProivder extends ContentProvider {
     //<content_authority>/users/favourites
     public static final int USERS_BY_FAVOURITES_FILTER = 107;
 
+    public static final int USERS_BY_ETHNICITY_WEIGHT_FILTER = 108;
+
+    public static final int USERS_BY_ETHNICITY_HEIGHT_FILTER = 109;
+
 
     public static UriMatcher buildUriMatcher() {
         // don't need Regex because UriMatcher
@@ -66,6 +70,8 @@ public class StatusHubContentProivder extends ContentProvider {
         matcher.addURI(authority, "users/height", USERS_BY_HEIGHT_SORT);
         matcher.addURI(authority, "users/weight/*", USERS_BY_WEIGHT_FILTER);
         matcher.addURI(authority, "users/height/#", USERS_BY_HEIGHT_FILTER);
+        matcher.addURI(authority, "users/ethnicity/#/weight", USERS_BY_ETHNICITY_WEIGHT_FILTER);
+        matcher.addURI(authority, "users/ethnicity/#/height", USERS_BY_ETHNICITY_HEIGHT_FILTER);
         matcher.addURI(authority, "users/ethnicity/#", USERS_BY_ETHNICITY_FILTER);
         matcher.addURI(authority, "users/favourites", USERS_BY_FAVOURITES_FILTER);
         return matcher;
@@ -97,7 +103,7 @@ public class StatusHubContentProivder extends ContentProvider {
                         sortOrder);
                 break;
             case USERS_BY_ID:
-                retCursor = getUserById(uri, projection,sortOrder);
+                retCursor = getUserById(uri, projection, sortOrder);
                 break;
             case USERS_BY_HEIGHT_SORT:
                 retCursor = getUsersByHeightSort(uri, projection, sortOrder);
@@ -115,7 +121,13 @@ public class StatusHubContentProivder extends ContentProvider {
                 retCursor = getUsersByGenericFilters(uri, projection, sortOrder);
                 break;
             case USERS_BY_FAVOURITES_FILTER:
-                retCursor = getUsersByFavouriteFilter(uri, projection,sortOrder);
+                retCursor = getUsersByFavouriteFilter(uri, projection, sortOrder);
+                break;
+            case USERS_BY_ETHNICITY_HEIGHT_FILTER:
+                retCursor = getUsersByGenericFilters(uri,projection,sortOrder);
+                break;
+            case USERS_BY_ETHNICITY_WEIGHT_FILTER:
+                retCursor = getUsersByGenericFilters(uri,projection,sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri : " + uri);
@@ -148,6 +160,10 @@ public class StatusHubContentProivder extends ContentProvider {
             case USERS_BY_ETHNICITY_FILTER:
                 return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
             case USERS_BY_FAVOURITES_FILTER:
+                return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
+            case USERS_BY_ETHNICITY_HEIGHT_FILTER:
+                return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
+            case USERS_BY_ETHNICITY_WEIGHT_FILTER:
                 return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
@@ -311,6 +327,7 @@ public class StatusHubContentProivder extends ContentProvider {
 
         int match = sUriMatcher.match(uri);
         String selection = null;
+        String sort = null;
         String[] selectionArgs = {
                 StatusHubContract.UsersSchema.getGenericFilterValueFromUsersUri(uri)
         };
@@ -324,6 +341,14 @@ public class StatusHubContentProivder extends ContentProvider {
             case USERS_BY_ETHNICITY_FILTER:
                 selection = StatusHubContract.UsersSchema.SELECT_BY_ETHNICITY_FILTER;
                 break;
+            case USERS_BY_ETHNICITY_WEIGHT_FILTER:
+                selection = StatusHubContract.UsersSchema.SELECT_BY_ETHNICITY_FILTER;
+                sort = StatusHubContract.UsersSchema.SORT_BY_WEIGHT;
+                break;
+            case USERS_BY_ETHNICITY_HEIGHT_FILTER:
+                selection = StatusHubContract.UsersSchema.SELECT_BY_ETHNICITY_FILTER;
+                sort = StatusHubContract.UsersSchema.SORT_BY_HEIGHT;
+                break;
         }
 
 
@@ -334,7 +359,7 @@ public class StatusHubContentProivder extends ContentProvider {
                 selectionArgs,
                 null,
                 null,
-                sortOrder);
+                sort);
 
 
     }

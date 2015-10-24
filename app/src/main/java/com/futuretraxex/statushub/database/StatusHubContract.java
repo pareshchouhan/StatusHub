@@ -140,6 +140,22 @@ public class StatusHubContract {
                     .build();
         }
 
+        public static Uri buildUsersWithEthnicityIdWeightFilter(int ethnicity)   {
+            return CONTENT_URI.buildUpon()
+                    .appendEncodedPath(PATH_USERS_ETHNICITY)
+                    .appendEncodedPath(String.valueOf(ethnicity))
+                    .appendEncodedPath(PATH_USERS_WEIGHT)
+                    .build();
+        }
+
+        public static Uri buildUsersWithEthnicityIdHeightFilter(int ethnicity)   {
+            return CONTENT_URI.buildUpon()
+                    .appendEncodedPath(PATH_USERS_ETHNICITY)
+                    .appendEncodedPath(String.valueOf(ethnicity))
+                    .appendEncodedPath(PATH_USERS_HEIGHT)
+                    .build();
+        }
+
         //Get users id from Uri of the form <content_authority>/users/3
         //returns 3
         public static String getUserIdFromUsersByIdUri(Uri uri) {

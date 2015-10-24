@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="afterDescendants"
+        android:focusable="false"
         >
     </SearchView>
 
@@ -136,6 +137,15 @@
 
 
     </ListView>
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:background="@drawable/progress_bar"
+        />
 
 
 </RelativeLayout>

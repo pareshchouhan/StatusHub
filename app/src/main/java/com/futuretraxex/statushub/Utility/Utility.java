@@ -71,34 +71,34 @@ public class Utility {
         //try regex matches in case our naive user enters
         // "singh is bling indian" -- match true.
         //
-        if(ethnicity.matches(".*(asian|asia).*"))    {
+        if(ethnicity.matches("asian"))    {
             return Constants.ETHNICITY_ASIAN;
         }
-        else if(ethnicity.matches(".*(indian|india|bharat).*")) {
+        else if(ethnicity.matches(".*(in|indian|india|bharat).*")) {
             return Constants.ETHNICITY_INDIAN;
         }
-        else if(ethnicity.matches(".*(african american|african).*")) {
+        else if(ethnicity.matches(".*(af|african american|african).*")) {
             return Constants.ETHNICITY_AFRICAN_AMERICAN;
         }
         else if(ethnicity.matches(".*(asian american).*")) {
             return Constants.ETHNICITY_ASIAN_AMERICAN;
         }
-        else if(ethnicity.matches(".*(european|euro|eu).*")) {
+        else if(ethnicity.matches(".*(eu|european|euro|eu).*")) {
             return Constants.ETHNICITY_EUROPEAN;
         }
-        else if(ethnicity.matches(".*(british|brits|uk).*")) {
+        else if(ethnicity.matches(".*(br|british|brits|uk).*")) {
             return Constants.ETHNICITY_BRITISH;
         }
-        else if(ethnicity.matches(".*(jewish|jew).*")) {
+        else if(ethnicity.matches(".*(j|jewish|jew).*")) {
             return Constants.ETHNICITY_JEWISH;
         }
-        else if(ethnicity.matches(".*(latino|esp|espanol).*")) {
+        else if(ethnicity.matches(".*(la|latino|esp|espanol).*")) {
             return Constants.ETHNICITY_LATINO;
         }
-        else if(ethnicity.matches(".*(native americans|native|hispanic).*")) {
+        else if(ethnicity.matches(".*(na|native americans|native|hispanic).*")) {
             return Constants.ETHNICITY_NATIVE_AMERICAN;
         }
-        else if(ethnicity.matches(".*(arab).*")) {
+        else if(ethnicity.matches(".*(ar|arab).*")) {
             return Constants.ETHNICITY_ARABIC;
         }
         else {

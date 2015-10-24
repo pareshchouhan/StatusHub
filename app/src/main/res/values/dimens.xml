@@ -5,4 +5,5 @@
     <dimen name="activity_home_padding_favourites">16dp</dimen>
     <dimen name="activity_home_textsize_favourites">18sp</dimen>
 
+
 </resources>
