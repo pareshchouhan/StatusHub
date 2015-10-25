@@ -91,6 +91,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             HomeActivityViewHolder.mUserGridView.setEmptyView(HomeActivityViewHolder.mEmptyView);
         }
 
+        HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         //Initialize viewholder.
         Logger.init();
