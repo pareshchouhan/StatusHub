@@ -398,7 +398,13 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 //        Logger.w("Swapping cursor data " + data.getCount());
-        HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        if(data != null && data.getCount() > 0) {
+            HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        }
+        else {
+            HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.VISIBLE);
+        }
+
         mStatusListAdapter.swapCursor(data);
 
     }
