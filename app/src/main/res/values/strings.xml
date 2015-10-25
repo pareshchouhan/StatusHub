@@ -19,4 +19,21 @@
 
     <string name="empty_fav_view">You got no favourites :(</string>
     <string name="empty_status_view">No data :( , Check your internet connection.</string>
+
+    <string name="activity_member_profile_dob_text">DOB</string>
+    <string name="activity_member_profile_weight">Weight</string>
+    <string name="activity_member_profile_height">Height</string>
+    <string name="activity_member_profile_is_veg">Veg ?</string>
+    <string name="activity_member_profile_drinks">Drinks ?</string>
+    
+    <string name="weight_string">%.2f Kg</string>
+    <string name="height_string">%d cm</string>
+
+    <string name="total_users">Total Users : %d</string>
+    <string name="api_hits">API Hits : %s</string>
+
+
+    <string name="activity_home_title">StatusHub</string>
+    <string name="activity_favourites_title">Favourites</string>
+    <string name="activity_member_profile_title">User</string>
 </resources>

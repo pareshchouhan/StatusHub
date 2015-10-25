@@ -36,6 +36,8 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
 
+        setTitle(getString(R.string.activity_favourites_title));
+
         mFavouriteListAdapter = new StatusListAdapter(this,null,true);
         new FavouritesActivityViewHolder(getWindow().getDecorView().getRootView());
 

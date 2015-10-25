@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 import com.futuretraxex.statushub.Utility.Utility;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class StatusHubContract {
     //Content authority to be register by provider.
@@ -30,6 +30,7 @@ public class StatusHubContract {
 
     public static final String PATH_USERS_ETHNICITY = "ethnicity";
 
+    public static final String PATH_COUNT = "count";
 
 
 
@@ -79,6 +80,7 @@ public class StatusHubContract {
         public static final String SELECT_BY_HEIGHT_FILTER = "height >= ?";
         public static final String SELECT_BY_ETHNICITY_FILTER = "ethnicity = ?";
         public static final String SELECT_BY_FAVOURITES_FILTER = "is_favourite = 1";
+        public static final String SELECT_COUNT_ROWS = "COUNT(*)";
 
         //below build Uris are working, See TestUriGenerator.java for detailed Tests.
 
@@ -160,6 +162,12 @@ public class StatusHubContract {
             return CONTENT_URI.buildUpon()
                     .appendEncodedPath(PATH_USERS_FAVOURITES)
                     .appendEncodedPath(String.valueOf(id))
+                    .build();
+        }
+
+        public static Uri buildCountUri()   {
+            return CONTENT_URI.buildUpon()
+                    .appendEncodedPath(PATH_COUNT)
                     .build();
         }
 

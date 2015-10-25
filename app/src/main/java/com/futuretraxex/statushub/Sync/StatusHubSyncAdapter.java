@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 
 /**
- * Created by dragonSlayer on 10/19/2015.
+ * Created by paresh on 10/19/2015.
  */
 public class StatusHubSyncAdapter extends AbstractThreadedSyncAdapter {
 

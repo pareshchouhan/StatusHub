@@ -23,10 +23,13 @@ import android.widget.TextView;
 
 import com.futuretraxex.statushub.Adapters.StatusListAdapter;
 import com.futuretraxex.statushub.R;
+import com.futuretraxex.statushub.Sync.NetworkService;
 import com.futuretraxex.statushub.Sync.StatusHubSyncAdapter;
 import com.futuretraxex.statushub.Utility.Utility;
 import com.futuretraxex.statushub.database.StatusHubContract;
 import com.orhanobut.logger.Logger;
+
+import junit.framework.TestResult;
 
 public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -59,6 +62,8 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int COL_TABLE_IS_FAVOURITE = 9;
     public static final int COL_TABLE_IMAGE = 10;
 
+    private int mUserCount = 0;
+
     private Uri mDataUri = null;
     private int mEthnicity = -1;
 
@@ -90,6 +95,38 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         //Initialize viewholder.
         Logger.init();
 
+        Uri userCountUri = StatusHubContract.UsersSchema.buildCountUri();
+        Cursor countCursor = getContentResolver().query(userCountUri,null,null,null,null);
+        if(countCursor != null) {
+            if(countCursor.moveToFirst())   {
+                mUserCount = countCursor.getInt(0);
+            }
+            countCursor.close();
+        }
+
+        String format = String.format(getString(R.string.total_users),mUserCount);
+        HomeActivityViewHolder.mUsersCount.setText(format);
+
+        NetworkService.FetchAPIHits(this, new NetworkService.NetworkServiceCB() {
+            @Override
+            public void onSuccess(Bundle message) {
+                if(message.containsKey("api_hits")) {
+                    String hits = message.getString("api_hits");
+                    final String format = String.format(getString(R.string.api_hits),hits);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            HomeActivityViewHolder.mApiCount.setText(format);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFaliure(Bundle message) {
+
+            }
+        });
 
 
         ISetupListeners();
@@ -283,6 +320,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
         public static ProgressBar mProgressBar;
 
+        public static TextView mUsersCount;
+        public static TextView mApiCount;
+
         public static TextView mEmptyView;
 
         public HomeActivityViewHolder(View view, boolean isPotratit)    {
@@ -293,6 +333,11 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             mSearchView = (SearchView) view.findViewById(R.id.searchbar);
             mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar);
             mEmptyView = (TextView) view.findViewById(R.id.empty_status_view);
+
+            mUsersCount = (TextView) view.findViewById(R.id.member_count);
+            mApiCount = (TextView) view.findViewById(R.id.api_use_count);
+
+
             if(isPotratit)  {
                 mUsersListView = (ListView) view.findViewById(R.id.status_list);
             }

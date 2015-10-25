@@ -5,6 +5,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/sativa"
     tools:context="com.futuretraxex.statushub.Activity.MemberProfileActivity">
 
     <TextView
@@ -102,6 +103,20 @@
     </LinearLayout>
 
 
+    <TextView
+        android:id="@+id/status"
+        tools:text="This is a long status"
+        android:singleLine="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        android:layout_above="@id/bottom_content"
+        android:background="@drawable/border_favourites"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        />
+
     <LinearLayout
         android:background="@drawable/border_favourites"
         android:layout_marginTop="10dp"
@@ -112,12 +127,11 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_content">
+        android:layout_above="@id/status">
         <ImageView
             android:id="@+id/large_profile_pic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:src="@drawable/ic_photo_black_24dp"
             android:layout_weight="1"
             />
@@ -134,13 +148,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="DOB"
-                    android:layout_weight="1"
+                    android:id="@+id/dob_text"
+                    android:text="@string/activity_member_profile_dob_text"
                     android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:drawableStart="@drawable/cake_dob"
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="21-02-2016"
+                    android:id="@+id/dob"
+                    tools:text="0-0-0"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:layout_width="match_parent"
@@ -153,13 +172,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="Weight"
+                    android:text="@string/activity_member_profile_weight"
                     android:layout_weight="1"
+                    android:gravity="start|center_vertical"
+                    android:paddingLeft="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:drawableStart="@drawable/ic_face_black_24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:src="@drawable/ic_photo_black_24dp"
+                <TextView
+                    android:id="@+id/weight"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -169,13 +192,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="Height"
+                    android:text="@string/activity_member_profile_height"
+                    android:drawableStart="@drawable/ic_accessibility_black_24dp"
                     android:layout_weight="1"
+                    android:gravity="start|center_vertical"
+                    android:paddingLeft="5dp"
+                    android:layout_marginLeft="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:src="@drawable/ic_photo_black_24dp"
+                <TextView
+                    android:id="@+id/height"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -185,13 +212,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="Drinks?"
+                    android:id="@+id/drinks_text"
+                    android:text="@string/activity_member_profile_drinks"
+                    android:drawableStart="@drawable/beer"
+                    android:gravity="start|center_vertical"
+                    android:paddingLeft="5dp"
+                    android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <ImageView
-                    android:src="@drawable/ic_photo_black_24dp"
+                    android:id="@+id/drinks"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -201,13 +233,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="Veg?"
+                    android:id="@+id/veg_text"
+                    android:text="@string/activity_member_profile_is_veg"
+                    android:drawableStart="@drawable/veg"
+                    android:gravity="start|center_vertical"
                     android:layout_weight="1"
+                    android:paddingLeft="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <ImageView
-                    android:src="@drawable/ic_photo_black_24dp"
+                    android:id="@+id/veg"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -215,6 +251,8 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 
 </RelativeLayout>

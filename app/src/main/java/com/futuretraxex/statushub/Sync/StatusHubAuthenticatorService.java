@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class StatusHubAuthenticatorService extends Service {
     // Instance field that stores the authenticator object

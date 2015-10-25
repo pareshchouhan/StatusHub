@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class StatusHubAuthenticator extends AbstractAccountAuthenticator {
 

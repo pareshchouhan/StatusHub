@@ -3,7 +3,7 @@ package com.futuretraxex.statushub.DataModel;
 import com.futuretraxex.statushub.Utility.Utility;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class MemberModel {
 

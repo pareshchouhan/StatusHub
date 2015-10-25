@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class NetworkService {
 
@@ -34,7 +34,7 @@ public class NetworkService {
 
     static public final String FETCH_API_HITS_URL = "https://tipstat.0x10.info/api/tipstat?type=json&query=api_hits";
 
-    interface NetworkServiceCB {
+    public interface NetworkServiceCB {
         void onSuccess(Bundle message);
         void onFaliure(Bundle message);
     }
@@ -81,11 +81,41 @@ public class NetworkService {
         }).start();
     }
 
-    public static void FetchAPIHits(final Context context)   {
+    public static void FetchAPIHits(final Context context, final NetworkServiceCB networkServiceCB)   {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //Do network access here.
+
+                OkHttpClient client = new OkHttpClient();
+                Bundle temp = new Bundle();
+                try {
+                    URL _url = new URL(FETCH_API_HITS_URL);
+                    RequestBody body = new FormEncodingBuilder()
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(_url)
+                            .post(body)
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    String responseBody = response.body().string();
+
+                    //Parse JSON data here.
+                    if(response.code() == 200)  {
+                        JSONObject output = new JSONObject(responseBody);
+                        temp.putString("api_hits",output.getString("api_hits"));
+                        networkServiceCB.onSuccess(temp);
+                    }
+                    else {
+                        temp.putString("message", "HTTP Error Code : " + response.code());
+                        networkServiceCB.onFaliure(temp);
+                    }
+
+                } catch (IOException|JSONException iox) {
+                    Logger.e("Exception : " + iox.toString());
+                    temp.putString("message", "Exception : " + iox.toString());
+                    networkServiceCB.onFaliure(temp);
+                }
             }
         }).start();
     }

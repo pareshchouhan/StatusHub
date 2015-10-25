@@ -10,7 +10,7 @@ import com.futuretraxex.statushub.database.StatusHubDBHelper;
 import java.util.HashSet;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class TestDB extends AndroidTestCase {
 

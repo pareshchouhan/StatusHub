@@ -10,12 +10,13 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.support.annotation.Nullable;
+import android.widget.CursorAdapter;
 
 import com.futuretraxex.statushub.Utility.Utility;
 import com.orhanobut.logger.Logger;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class StatusHubContentProivder extends ContentProvider {
 
@@ -58,6 +59,8 @@ public class StatusHubContentProivder extends ContentProvider {
 
     public static final int USERS_BY_FAVOURITE_TOGGLE = 110;
 
+    public static final int USERS_COUNT = 111;
+
 
     public static UriMatcher buildUriMatcher() {
         // don't need Regex because UriMatcher
@@ -79,6 +82,7 @@ public class StatusHubContentProivder extends ContentProvider {
         matcher.addURI(authority, "users/ethnicity/#", USERS_BY_ETHNICITY_FILTER);
         matcher.addURI(authority, "users/favourites/#", USERS_BY_FAVOURITE_TOGGLE);
         matcher.addURI(authority, "users/favourites", USERS_BY_FAVOURITES_FILTER);
+        matcher.addURI(authority, "users/count", USERS_COUNT);
 
         return matcher;
     }
@@ -135,6 +139,9 @@ public class StatusHubContentProivder extends ContentProvider {
             case USERS_BY_ETHNICITY_WEIGHT_FILTER:
                 retCursor = getUsersByGenericFilters(uri,projection,sortOrder);
                 break;
+            case USERS_COUNT:
+                retCursor = getUserCount(uri, projection, sortOrder);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri : " + uri);
 
@@ -173,6 +180,8 @@ public class StatusHubContentProivder extends ContentProvider {
                 return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
             case USERS_BY_FAVOURITE_TOGGLE:
                 return StatusHubContract.UsersSchema.CONTENT_DIR_TYPE;
+            case USERS_COUNT:
+                return StatusHubContract.UsersSchema.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -299,6 +308,21 @@ public class StatusHubContentProivder extends ContentProvider {
                 id
         };
         return mDBHelper.getWritableDatabase().update(StatusHubContract.UsersSchema.TABLE_NAME, cvalue, selection, selectionArgs);
+    }
+
+    private Cursor getUserCount(Uri uri, String[] projection, String sortOrder) {
+        String[] project = {
+                StatusHubContract.UsersSchema.SELECT_COUNT_ROWS
+        };
+        return mDBHelper.getWritableDatabase().query(
+                StatusHubContract.UsersSchema.TABLE_NAME,
+                project,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
     }
 
     private Cursor getUserById(Uri uri, String[] projection, String sortOrder)   {

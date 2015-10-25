@@ -3,7 +3,7 @@ package com.futuretraxex.statushub;
 import android.test.AndroidTestCase;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class TestUriMatcher extends AndroidTestCase {
     @Override

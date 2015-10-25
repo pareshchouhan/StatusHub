@@ -8,7 +8,7 @@ import android.util.Log;
 import com.orhanobut.logger.Logger;
 
 /**
- * Created by dragonSlayer on 10/19/2015.
+ * Created by paresh on 10/19/2015.
  */
 
 public class StatusHubSyncService extends Service {

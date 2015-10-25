@@ -7,7 +7,7 @@ import com.futuretraxex.statushub.Utility.Utility;
 import com.orhanobut.logger.Logger;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class TestUtility extends AndroidTestCase {
 

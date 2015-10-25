@@ -5,7 +5,7 @@ import android.test.AndroidTestCase;
 import com.futuretraxex.statushub.database.StatusHubContract;
 
 /**
- * Created by hudelabs on 10/24/2015.
+ * Created by paresh on 10/24/2015.
  */
 public class TestUriGenerator extends AndroidTestCase {
 
