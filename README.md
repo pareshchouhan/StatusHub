@@ -1,4 +1,4 @@
- 	## StatusHub
+## StatusHub
 
 ##### Tipstat Android Developer Hiring Challenge.
 
@@ -12,6 +12,13 @@ Features :
 * Sharing, SMS is functional.
 
 
+TODO:  
+
+* Accessibility features, Need to set ContentDescription for ImageViews.
+* Write full test suite.
+* Fix design.
+* More sorting functionality.
+
 References :
 * [Google Icons repository]
 * [Sublte Patterns]
@@ -23,5 +30,4 @@ References :
 [Sublte Patterns]: <http://subtlepatterns.com/dark-embroidery/>
 [Developer Android]: <http://developer.android.com/>
 [Circle Transform Picasso]: <http://stackoverflow.com/a/26112408>
-
 

@@ -29,7 +29,9 @@ import com.futuretraxex.statushub.Utility.Utility;
 import com.futuretraxex.statushub.database.StatusHubContract;
 import com.orhanobut.logger.Logger;
 
-import junit.framework.TestResult;
+
+//TODO: write fully functional Test suite.
+
 
 public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 

@@ -18,7 +18,7 @@
     <string name="member_view_back">Back</string>
 
     <string name="empty_fav_view">You got no favourites :(</string>
-    <string name="empty_status_view">No data :( , Check your internet connection.</string>
+    <string name="empty_status_view">No data :( , Something unusual happened.</string>
 
     <string name="activity_member_profile_dob_text">DOB</string>
     <string name="activity_member_profile_weight">Weight</string>
