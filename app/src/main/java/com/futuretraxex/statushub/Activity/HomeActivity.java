@@ -1,5 +1,6 @@
 package com.futuretraxex.statushub.Activity;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -131,11 +132,38 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
+        //Create Shortcut on Home Screen
+        if(!getSharedPreferences(Utility.APP_PREFERENCE, Activity.MODE_PRIVATE).getBoolean(Utility.IS_ICON_CREATED, false)){
+            addShortcut();
+            getSharedPreferences(Utility.APP_PREFERENCE, Activity.MODE_PRIVATE).edit().putBoolean(Utility.IS_ICON_CREATED, true);
+        }
+
 
         ISetupListeners();
 
         StatusHubSyncAdapter.initializeSyncAdapter(this);
         getLoaderManager().initLoader(USERS_LOADER, null, this);
+    }
+
+    private void addShortcut() {
+        //Adding shortcut for MainActivity
+        //on Home screen
+        Intent shortcutIntent = new Intent(getApplicationContext(),
+                HomeActivity.class);
+
+        shortcutIntent.setAction(Intent.ACTION_MAIN);
+
+        Intent addIntent = new Intent();
+        addIntent
+                .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "StatusHub");
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(getApplicationContext(),
+                        R.mipmap.ic_launcher));
+
+        addIntent
+                .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        getApplicationContext().sendBroadcast(addIntent);
     }
 
     //Setup Listeners in here.

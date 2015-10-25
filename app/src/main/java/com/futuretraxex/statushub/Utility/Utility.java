@@ -6,6 +6,8 @@ package com.futuretraxex.statushub.Utility;
 public class Utility {
 
 
+    public static String APP_PREFERENCE = "statushub";
+    public static String IS_ICON_CREATED = "icon_check";
 
     public static String getEthnicityFromId(int id) {
         switch(id)    {
