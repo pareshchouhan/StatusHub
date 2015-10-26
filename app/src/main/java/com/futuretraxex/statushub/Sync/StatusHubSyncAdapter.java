@@ -1,9 +1,5 @@
 package com.futuretraxex.statushub.Sync;
 
-/**
- * Created by hudelabs on 10/24/2015.
- */
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
@@ -41,7 +37,7 @@ public class StatusHubSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private final String SYNC_LOG_TAG = this.getClass().getName();
 
-    // Interval at which to sync with the weather, in seconds.
+    // Interval at which to sync with the API, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
