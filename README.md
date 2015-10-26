@@ -28,18 +28,21 @@ References :
 
 Screenshots :
 
-![home][home_img]
-![favourite][fav]
-![profile_fav][prof_fav]
+![home][home_img]  
+
+![favourite][fav]  
+
+![profile_fav][prof_fav]  
+
 ![profile_unfav][prof_unfav]
 
 [Google Icons repository]: <https://www.google.com/design/icons/index.html>
 [Sublte Patterns]: <http://subtlepatterns.com/dark-embroidery/>
 [Developer Android]: <http://developer.android.com/>
 [Circle Transform Picasso]: <http://stackoverflow.com/a/26112408>
-[home_img]: <https://gitlab.com/devlud/StatusHub/blob/master/screenshots/home.png>
-[fav]: <https://gitlab.com/devlud/StatusHub/blob/master/screenshots/fav.png>
-[prof_fav]: <https://gitlab.com/devlud/StatusHub/blob/master/screenshots/profile_fav.png>
-[prof_unfav]: <https://gitlab.com/devlud/StatusHub/blob/master/screenshots/profile_unfav.png>
+[home_img]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/home.png>
+[fav]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/fav.png>
+[prof_fav]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/profile_fav.png>
+[prof_unfav]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/profile_unfav.png>
 
 
