@@ -61,7 +61,7 @@ public class StatusHubSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param provider
      * @param syncResult
      *
-     * perform Network fetch here, fetch all data including diary , attendance, notifications , test results.
+     * perform Network fetch here, fetch all data.
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
