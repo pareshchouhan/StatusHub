@@ -404,6 +404,17 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         else {
             HomeActivityViewHolder.mProgressBar.setVisibility(ProgressBar.VISIBLE);
         }
+        Uri userCountUri = StatusHubContract.UsersSchema.buildCountUri();
+        Cursor countCursor = getContentResolver().query(userCountUri,null,null,null,null);
+        if(countCursor != null) {
+            if(countCursor.moveToFirst())   {
+                mUserCount = countCursor.getInt(0);
+            }
+            countCursor.close();
+        }
+
+        String format = String.format(getString(R.string.total_users),mUserCount);
+        HomeActivityViewHolder.mUsersCount.setText(format);
 
         mStatusListAdapter.swapCursor(data);
 

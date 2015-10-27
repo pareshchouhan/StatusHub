@@ -59,7 +59,7 @@ public class StatusHubContract {
 
         public static final String SQL_CREATE_TABLE = "CREATE TABLE "+ TABLE_NAME + "(\n" +
                 "\t`"+ _ID  +"`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
-                "\t`"+ COLUMN_TABLE_USER_ID  +"`\tINTEGER NOT NULL UNIQUE,\n" +
+                "\t`"+ COLUMN_TABLE_USER_ID  +"`\tINTEGER NOT NULL,\n" +
                 "\t`" + COLUMN_TABLE_DOB + "`\tTEXT NOT NULL,\n" +
                 "\t`" + COLUMN_TABLE_STATUS + "`\tTEXT NOT NULL,\n" +
                 "\t`" + COLUMN_TABLE_ETHNICITY + "`\tINTEGER NOT NULL,\n" +
@@ -68,8 +68,9 @@ public class StatusHubContract {
                 "\t`"+ COLUMN_TABLE_IS_VEG +"`\tINTEGER NOT NULL,\n" +
                 "\t`"+ COLUMN_TABLE_DRINK +"`\tINTEGER NOT NULL,\n" +
                 "\t`"+ COLUMN_TABLE_IMAGE +"`\tTEXT,\n" +
-                "\t`"+ COLUMN_IS_FAVOURITE +"`\tINTEGER NOT NULL\n" +
-                ")";
+                "\t`"+ COLUMN_IS_FAVOURITE +"`\tINTEGER NOT NULL,\n" +
+                "\t UNIQUE (" + COLUMN_TABLE_USER_ID + ") ON CONFLICT REPLACE\n"+
+                "\t)";
 
 
 
