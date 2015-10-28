@@ -9,7 +9,8 @@ Features :
 * Selecting using Ethnicity is functional.
 * Sorting while Ethnicity selected is functional.
 * Adding and Removing from favourites is functional.
-* Sharing, SMS is functional.
+* Sharing, SMS is functional.  
+* Works Offline.
 
 
 TODO:  
@@ -40,9 +41,9 @@ Screenshots :
 [Sublte Patterns]: <http://subtlepatterns.com/dark-embroidery/>
 [Developer Android]: <http://developer.android.com/>
 [Circle Transform Picasso]: <http://stackoverflow.com/a/26112408>
-[home_img]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/home.png>
-[fav]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/fav.png>
-[prof_fav]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/profile_fav.png>
-[prof_unfav]: <https://gitlab.com/devlud/StatusHub/raw/master/screenshots/profile_unfav.png>
+[home_img]: <https://raw.githubusercontent.com/luddev/StatusHub/master/screenshots/home.png>
+[fav]: <https://raw.githubusercontent.com/luddev/StatusHub/master/screenshots/fav.png>
+[prof_fav]: <https://raw.githubusercontent.com/luddev/StatusHub/master/screenshots/profile_fav.png>
+[prof_unfav]: <https://raw.githubusercontent.com/luddev/StatusHub/master/screenshots/profile_unfav.png>
 
 
